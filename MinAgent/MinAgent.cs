@@ -17,15 +17,14 @@ namespace MinAgent
         float moveX = 0;
         float moveY = 0;
 
-        public MinAgent(IPropertyStorage propertyStorage)
-            : base(propertyStorage)
+        public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
             MovementSpeed = 55;
-            Strength = 75;
+            Strength = 55;
             Health = 10;
             Eyesight = 80;
-            Endurance = 25;
+            Endurance = 45;
             Dodge = 5;
 
 
@@ -38,8 +37,6 @@ namespace MinAgent
 
         public override IAction GetNextAction(List<IEntity> otherEntities)
         {
-
-
             List<Agent> agents = otherEntities.FindAll(a => a is Agent).ConvertAll<Agent>(a => (Agent)a);
             List<IEntity> plants = otherEntities.FindAll(a => a is Plant);
 
@@ -47,31 +44,14 @@ namespace MinAgent
             Agent rndAgent = null;
             rndAgent = agents[rnd.Next(agents.Count)];
 
-            switch (rnd.Next(5))
+            if (rndAgent != null && rndAgent.GetType() == typeof(MinAgent) && ProcreationCountDown == 0)
             {
-                case 1: //Procreate
-                    if (rndAgent != null && rndAgent.GetType() == typeof(MinAgent))
-                    {
-                        return new Procreate(rndAgent);
-                    }
-                    break;
+                return new Procreate(rndAgent);
+            }
 
-                case 2: //Attack Melee
-                    if (rndAgent != null && rndAgent.GetType() != typeof(MinAgent))
-                    {
-                        return new Attack(rndAgent);
-                    }
-                    break;
-                case 3: //Feed
-                    if (plants.Count > 0)
-                    {
-                        return new Feed((Plant)plants[rnd.Next(plants.Count)]);
-                    }
-                    break;
-                case 4: //Move
-                    return new Move(new AIVector(moveX, moveY));
-                default:
-                    return new Defend();
+            if (plants.Count > 0 && Hunger > 50f)
+            {
+                return new Feed((Plant)plants[rnd.Next(plants.Count)]);
             }
 
             return new Move(new AIVector(moveX, moveY));
