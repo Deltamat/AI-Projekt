@@ -22,12 +22,12 @@ namespace MinAgent
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
-            MovementSpeed = 20;
-            Strength = 50;
-            Health = 100;
+            MovementSpeed = 160;
+            Strength = 0;
+            Health = 10;
             Eyesight = 30;
-            Endurance = 0;
-            Dodge = 50;
+            Endurance = 50;
+            Dodge = 0;
 
 
             moveX = rnd.Next(-1, 2);
@@ -56,26 +56,28 @@ namespace MinAgent
 
             if (plants.Count > 0 && Hunger > 20f)
             {
-                if (closePlant == null)
+                if (closePlant == null) //if there are no focused plants
                 {
-                    closePlant = (Plant)plants[rnd.Next(plants.Count)];
+                    closePlant = (Plant)plants[rnd.Next(plants.Count)]; //focuses on a nearby plant
                 }
 
-                if (AIVector.Distance(Position, closePlant.Position) > AIModifiers.maxFeedingRange)
+                if (AIVector.Distance(Position, closePlant.Position) >= AIModifiers.maxFeedingRange) //if agent is too far away from a plant to feed, move closer to it
                 {
-                    moveX = closePlant.Position.Normalize().X - Position.Normalize().X;
-                    moveY = closePlant.Position.Normalize().Y - Position.Normalize().Y;
+                    AIVector vector = new AIVector(closePlant.Position.X - Position.X, closePlant.Position.Y - Position.Y);
+                    moveX = vector.Normalize().X;
+                    moveY = vector.Normalize().Y;
                     return new Move(new AIVector(moveX, moveY));
                 }
-                else
+                else //eat focused plant
                 {
                     return new Feed(closePlant);
                 }
             }
-            else if (Hunger > 20f && delay > 1000)
+            else if (plants.Count == 0 && Hunger > 20f && delay > 500) //choose new direction if there are no nearby plants
             {
                 moveX = rnd.Next(-1, 2);
                 moveY = rnd.Next(-1, 2);
+                
                 delay = 0;
             }
 
