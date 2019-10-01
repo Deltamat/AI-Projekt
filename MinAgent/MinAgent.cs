@@ -22,13 +22,14 @@ namespace MinAgent
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
-            MovementSpeed = 75;
-            Strength = 5;
-            Health = 80;
-            Eyesight = 40;
-            Endurance = 45;
-            Dodge = 5;
-            
+            MovementSpeed = 20;
+            Strength = 50;
+            Health = 100;
+            Eyesight = 30;
+            Endurance = 0;
+            Dodge = 50;
+
+
             moveX = rnd.Next(-1, 2);
             moveY = rnd.Next(-1, 2);
             string ddd = this.GetType().FullName;
@@ -38,9 +39,11 @@ namespace MinAgent
         {
             List<Agent> agents = otherEntities.FindAll(a => a is Agent).ConvertAll<Agent>(a => (Agent)a);
             List<IEntity> plants = otherEntities.FindAll(a => a is Plant);
-
+            //Checks if any non-allied agents are nearby and puts them in a list
+            var closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
+            //Checks if allied agents are nearby and puts them in a list
+            var alliedAgents = agents.FindAll(a => a is MinAgent);
             
-
             delay++;
 
             Agent rndAgent = null;
