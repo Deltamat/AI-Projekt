@@ -12,6 +12,9 @@ namespace MinAgent
     public class MinAgent : Agent
     {
         Random rnd;
+        int lastUpdateHealth;
+        bool underAttack = false;
+
 
         //Only for randomization of movement
         float moveX = 0;
@@ -23,14 +26,13 @@ namespace MinAgent
             MovementSpeed = 20;
             Strength = 50;
             Health = 100;
-            Eyesight = 30;
+            Eyesight = 40;
             Endurance = 0;
-            Dodge = 50;
+            Dodge = 40;
 
 
             moveX = rnd.Next(-1, 2);
             moveY = rnd.Next(-1, 2);
-            string ddd = this.GetType().FullName;
         }
 
 
@@ -44,21 +46,30 @@ namespace MinAgent
             //Checks if allied agents are nearby and puts them in a list
             var alliedAgents = agents.FindAll(a => a is MinAgent);
 
-            Agent rndAgent = null;
-            rndAgent = agents[rnd.Next(agents.Count)];
-
-            if (rndAgent != null && rndAgent.GetType() == typeof(MinAgent) && ProcreationCountDown == 0)
+            foreach (var item in closeEnemyAgents)
             {
-                return new Procreate(rndAgent);
+                if (AIVector.Distance(Position, item.Position) <= AIModifiers.maxMeleeAttackRange)
+                {
+                    underAttack = true;
+                }
             }
-
-            if (plants.Count > 0 && Hunger > 50f)
-            {
-                return new Feed((Plant)plants[rnd.Next(plants.Count)]);
-            }
-
+            //if (lastUpdateHealth > Health /*&& Hunger < AIModifiers.maxHungerBeforeHitpointsDamage*/)
+            //{
+            //    underAttack = true;
+            //}
+            ////Mangler gameTime for at det kan virke ordenligt
+            ////else if (lastUpdateHealth > Health + AIModifiers.hungerHitpointsDamagePerSecond && Hunger > AIModifiers.maxHungerBeforeHitpointsDamage)
+            ////{
+            ////    underAttack = true;
+            ////}
+            //else
+            //{
+            //    underAttack = false;
+            //}
+            
+            lastUpdateHealth = Health;
             return new Move(new AIVector(moveX, moveY));
-
+            
         }
 
 
