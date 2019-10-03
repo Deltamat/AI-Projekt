@@ -15,7 +15,6 @@ namespace MinAgent
         int lastUpdateHealth;
         bool underAttack = false;
 
-
         //Only for randomization of movement
         float moveX = 0;
         float moveY = 0;
@@ -48,11 +47,13 @@ namespace MinAgent
             
             delay++;
 
-            Agent rndAgent = null;
-            rndAgent = agents[rnd.Next(agents.Count)];
+            //Agent rndAgent = null;
+            //rndAgent = agents[rnd.Next(agents.Count)];
 
-            if (rndAgent != null && rndAgent.GetType() == typeof(MinAgent) && ProcreationCountDown == 0)
-
+            //if (rndAgent != null && rndAgent.GetType() == typeof(MinAgent) && ProcreationCountDown == 0)
+            //{
+            //    return new Procreate(rndAgent);
+            //}
             foreach (var item in closeEnemyAgents)
             {
                 if (AIVector.Distance(Position, item.Position) <= AIModifiers.maxMeleeAttackRange)
@@ -75,17 +76,12 @@ namespace MinAgent
             //}
             
             lastUpdateHealth = Health;
-            return new Move(new AIVector(moveX, moveY));
-            
-        }
-                return new Procreate(rndAgent);
-            }
 
             if (plants.Count > 0 && Hunger > 20f)
             {
                 if (closePlant == null) //if there are no focused plants
                 {
-                    closePlant = (Plant)plants[rnd.Next(plants.Count)]; //focuses on a nearby plant
+                    closePlant = (Plant) plants[rnd.Next(plants.Count)]; //focuses on a nearby plant
                 }
 
                 if (AIVector.Distance(Position, closePlant.Position) >= AIModifiers.maxFeedingRange) //if agent is too far away from a plant to feed, move closer to it
@@ -111,9 +107,8 @@ namespace MinAgent
             closePlant = null;
 
             return new Move(new AIVector(moveX, moveY));
-
         }
-        
+           
         public override void ActionResultCallback(bool success)
         {
             //Do nothing - AI dont take success of an action into account
