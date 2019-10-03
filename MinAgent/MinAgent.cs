@@ -22,10 +22,10 @@ namespace MinAgent
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
-            MovementSpeed = 160;
+            MovementSpeed = 140;
             Strength = 0;
             Health = 10;
-            Eyesight = 30;
+            Eyesight = 50;
             Endurance = 50;
             Dodge = 0;
 
@@ -73,11 +73,11 @@ namespace MinAgent
                     return new Feed(closePlant);
                 }
             }
-            else if (plants.Count == 0 && Hunger > 20f && delay > 500) //choose new direction if there are no nearby plants
+            else if (plants.Count == 0 && Hunger > 20f && delay > 300) //choose new direction if there are no nearby plants
             {
                 moveX = rnd.Next(-1, 2);
                 moveY = rnd.Next(-1, 2);
-                
+
                 delay = 0;
             }
 
