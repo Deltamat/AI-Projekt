@@ -12,6 +12,9 @@ namespace MinAgent
     public class MinAgent : Agent
     {
         Random rnd;
+        int lastUpdateHealth;
+        bool underAttack = false;
+
 
         //Only for randomization of movement
         float moveX = 0;
@@ -32,7 +35,6 @@ namespace MinAgent
 
             moveX = rnd.Next(-1, 2);
             moveY = rnd.Next(-1, 2);
-            string ddd = this.GetType().FullName;
         }
         
         public override IAction GetNextAction(List<IEntity> otherEntities)
@@ -50,7 +52,32 @@ namespace MinAgent
             rndAgent = agents[rnd.Next(agents.Count)];
 
             if (rndAgent != null && rndAgent.GetType() == typeof(MinAgent) && ProcreationCountDown == 0)
+
+            foreach (var item in closeEnemyAgents)
             {
+                if (AIVector.Distance(Position, item.Position) <= AIModifiers.maxMeleeAttackRange)
+                {
+                    underAttack = true;
+                }
+            }
+            //if (lastUpdateHealth > Health /*&& Hunger < AIModifiers.maxHungerBeforeHitpointsDamage*/)
+            //{
+            //    underAttack = true;
+            //}
+            ////Mangler gameTime for at det kan virke ordenligt
+            ////else if (lastUpdateHealth > Health + AIModifiers.hungerHitpointsDamagePerSecond && Hunger > AIModifiers.maxHungerBeforeHitpointsDamage)
+            ////{
+            ////    underAttack = true;
+            ////}
+            //else
+            //{
+            //    underAttack = false;
+            //}
+            
+            lastUpdateHealth = Health;
+            return new Move(new AIVector(moveX, moveY));
+            
+        }
                 return new Procreate(rndAgent);
             }
 
