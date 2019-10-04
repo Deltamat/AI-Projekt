@@ -26,10 +26,10 @@ namespace MinAgent
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
-            MovementSpeed = 140;
+            MovementSpeed = 0;
             Strength = 0;
             Health = 10;
-            Eyesight = 50;
+            Eyesight = 190;
             Endurance = 50;
             Dodge = 0;
 
@@ -47,7 +47,7 @@ namespace MinAgent
             var closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
             //Checks if allied agents are nearby and puts them in a list
             var alliedAgents = agents.FindAll(a => a is MinAgent);
-            
+
             delay++;
 
             //Agent rndAgent = null;
