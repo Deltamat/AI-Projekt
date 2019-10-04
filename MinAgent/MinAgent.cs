@@ -29,8 +29,8 @@ namespace MinAgent
             MovementSpeed = 140;
             Strength = 0;
             Health = 10;
-            Eyesight = 50;
-            Endurance = 50;
+            Eyesight = 80;
+            Endurance = 20;
             Dodge = 0;
 
 
@@ -45,7 +45,7 @@ namespace MinAgent
             plants.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             
             
-            foreach (var plant in plants.OrderBy(c => AIVector.Distance(Position, c.Position))) ;
+            //foreach (var plant in plants.OrderBy(c => AIVector.Distance(Position, c.Position))) ;
             
             //Checks if any non-allied agents are nearby and puts them in a list
             var closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
