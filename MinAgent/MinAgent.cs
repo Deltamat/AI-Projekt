@@ -40,6 +40,9 @@ namespace MinAgent
         {
             List<Agent> agents = otherEntities.FindAll(a => a is Agent).ConvertAll<Agent>(a => (Agent)a);
             List<IEntity> plants = otherEntities.FindAll(a => a is Plant);
+            
+            foreach (var plant in plants.OrderBy(c => AIVector.Distance(Position, c.Position))) ;
+            
             //Checks if any non-allied agents are nearby and puts them in a list
             var closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
             //Checks if allied agents are nearby and puts them in a list
@@ -79,6 +82,7 @@ namespace MinAgent
 
             if (plants.Count > 0 && Hunger > 20f)
             {
+                
                 if (closePlant == null) //if there are no focused plants
                 {
                     closePlant = (Plant) plants[rnd.Next(plants.Count)]; //focuses on a nearby plant
