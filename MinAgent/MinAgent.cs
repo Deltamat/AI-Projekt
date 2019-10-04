@@ -6,6 +6,8 @@ using AIFramework;
 using AIFramework.Actions;
 using AIFramework.Entities;
 using System.Diagnostics;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace MinAgent
 {
@@ -15,6 +17,7 @@ namespace MinAgent
         int lastUpdateHealth;
         bool underAttack = false;
         State currentState = new StateFeed();
+        public static Rectangle window = Application.OpenForms[0].Bounds;
 
         //Only for randomization of movement
         public float moveX = 0;
@@ -50,7 +53,7 @@ namespace MinAgent
             //Checks if allied agents are nearby and puts them in a list
             alliedAgents = agents.FindAll(a => a is MinAgent);
             alliedAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
-
+            
             delay++;
 
             //Agent rndAgent = null;
@@ -84,7 +87,16 @@ namespace MinAgent
             
             lastUpdateHealth = Health;
 
-            if (plants.Count > 0 && Hunger > 20f)
+            if ((Position.X - 30 < window.Left ||
+                Position.X + 30 > window.Right ||
+                Position.Y - 30 < window.Top ||
+                Position.Y + 30 > window.Bottom) &&
+                delay > 300)
+            {
+                currentState = new StateMoveToCenter();
+            }
+
+            if (Hunger > 20f)
             {
                 currentState = new StateFeed();
             }
@@ -98,6 +110,7 @@ namespace MinAgent
 
             //targetPlant = null;
             
+
             return currentState.Execute(this);
         }
            
