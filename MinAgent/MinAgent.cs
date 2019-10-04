@@ -31,13 +31,13 @@ namespace MinAgent
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
-            MovementSpeed = 0;
-            Strength = 0;
+            MovementSpeed = 100;
+            Strength = 35;
             Health = 10;
-            Eyesight = 80;
+            Eyesight = 30;
             Endurance = 20;
-            Dodge = 0;
-            
+            Dodge = 55;
+
             moveX = rnd.Next(-1, 2);
             moveY = rnd.Next(-1, 2);
         }
@@ -67,13 +67,22 @@ namespace MinAgent
             {
                 currentState = new StateProcreate();
             }
-            
-            foreach (var item in closeEnemyAgents)
+
+            foreach (var enemy in closeEnemyAgents)
             {
-                if (AIVector.Distance(Position, item.Position) <= AIModifiers.maxMeleeAttackRange)
+                if (AIVector.Distance(Position, enemy.Position) <= AIModifiers.maxMeleeAttackRange * 2)
                 {
                     underAttack = true;
+                    currentState = new StateFlee();
+                    currentState.Execute(this);
                 }
+            }
+            if (underAttack && delay < 100)
+            {
+                moveX = rnd.Next(-1, 2);
+                moveY = rnd.Next(-1, 2);
+                delay = 0;
+                underAttack = false;
             }
             //if (lastUpdateHealth > Health && Hunger < AIModifiers.maxHungerBeforeHitpointsDamage)
             //{
