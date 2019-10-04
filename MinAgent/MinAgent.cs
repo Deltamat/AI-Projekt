@@ -15,7 +15,7 @@ namespace MinAgent
     {
         Random rnd;
         int lastUpdateHealth;
-        bool underAttack = false;
+        bool underAttack = false; //gammel bool
         State currentState = new StateFeed();
         public static Rectangle window = Application.OpenForms[0].Bounds;
 
@@ -31,9 +31,9 @@ namespace MinAgent
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
-            MovementSpeed = 0;
-            Strength = 0;
-            Health = 10;
+            MovementSpeed = 140;
+            Strength = 9;
+            Health = 1;
             Eyesight = 80;
             Endurance = 20;
             Dodge = 0;
@@ -91,16 +91,16 @@ namespace MinAgent
             
             lastUpdateHealth = Health;
 
-            if ((Position.X - 30 < window.Left ||
-                Position.X + 30 > window.Right ||
-                Position.Y - 30 < window.Top ||
-                Position.Y + 30 > window.Bottom) &&
-                delay > 300)
+            if ((Position.X < Eyesight ||
+                Position.X + Eyesight > window.Width ||
+                Position.Y < Eyesight ||
+                Position.Y + Eyesight > window.Height) &&
+                delay > 60 && plants.Count == 0)
             {
                 currentState = new StateMoveToCenter();
             }
 
-            if (Hunger > 20f)
+            else if (Hunger > 20f)
             {
                 currentState = new StateFeed();
             }
