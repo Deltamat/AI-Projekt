@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CachedAgent.cs" />
     <Compile Include="MinAgent.cs" />
     <Compile Include="MinAgentFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
