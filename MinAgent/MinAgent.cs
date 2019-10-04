@@ -31,11 +31,11 @@ namespace MinAgent
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
-            MovementSpeed = 140;
+            MovementSpeed = 0;
             Strength = 0;
             Health = 10;
-            Eyesight = 50;
-            Endurance = 50;
+            Eyesight = 80;
+            Endurance = 20;
             Dodge = 0;
             
             moveX = rnd.Next(-1, 2);
@@ -47,6 +47,10 @@ namespace MinAgent
             List<Agent> agents = otherEntities.FindAll(a => a is Agent).ConvertAll<Agent>(a => (Agent)a);
             plants = otherEntities.FindAll(a => a is Plant);
             plants.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
+            
+            
+            //foreach (var plant in plants.OrderBy(c => AIVector.Distance(Position, c.Position))) ;
+            
             //Checks if any non-allied agents are nearby and puts them in a list
             closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
             closeEnemyAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));

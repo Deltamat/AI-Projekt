@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CachedAgent.cs" />
+    <Compile Include="CachedPlant.cs" />
     <Compile Include="MinAgent.cs" />
     <Compile Include="MinAgentFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
