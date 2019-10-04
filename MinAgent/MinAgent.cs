@@ -22,6 +22,8 @@ namespace MinAgent
         public int delay;
         public Plant targetPlant;
         public List<IEntity> plants;
+        public List<Agent> closeEnemyAgents;
+        public List<Agent> alliedAgents;
 
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
@@ -29,11 +31,10 @@ namespace MinAgent
             MovementSpeed = 0;
             Strength = 0;
             Health = 10;
-            Eyesight = 190;
-            Endurance = 50;
+            Eyesight = 80;
+            Endurance = 20;
             Dodge = 0;
-
-
+            
             moveX = rnd.Next(-1, 2);
             moveY = rnd.Next(-1, 2);
         }
@@ -43,20 +44,27 @@ namespace MinAgent
             List<Agent> agents = otherEntities.FindAll(a => a is Agent).ConvertAll<Agent>(a => (Agent)a);
             plants = otherEntities.FindAll(a => a is Plant);
             plants.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
+            
+            
+            //foreach (var plant in plants.OrderBy(c => AIVector.Distance(Position, c.Position))) ;
+            
             //Checks if any non-allied agents are nearby and puts them in a list
-            var closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
+            closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
+            closeEnemyAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             //Checks if allied agents are nearby and puts them in a list
-            var alliedAgents = agents.FindAll(a => a is MinAgent);
+            alliedAgents = agents.FindAll(a => a is MinAgent);
+            alliedAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
 
             delay++;
 
             //Agent rndAgent = null;
             //rndAgent = agents[rnd.Next(agents.Count)];
 
-            //if (rndAgent != null && rndAgent.GetType() == typeof(MinAgent) && ProcreationCountDown == 0)
-            //{
-            //    return new Procreate(rndAgent);
-            //}
+            if (ProcreationCountDown == 0 && alliedAgents.Count() > 1)
+            {
+                currentState = new StateProcreate();
+            }
+            
             foreach (var item in closeEnemyAgents)
             {
                 if (AIVector.Distance(Position, item.Position) <= AIModifiers.maxMeleeAttackRange)
@@ -64,15 +72,15 @@ namespace MinAgent
                     underAttack = true;
                 }
             }
-            //if (lastUpdateHealth > Health /*&& Hunger < AIModifiers.maxHungerBeforeHitpointsDamage*/)
+            //if (lastUpdateHealth > Health && Hunger < AIModifiers.maxHungerBeforeHitpointsDamage)
             //{
             //    underAttack = true;
             //}
-            ////Mangler gameTime for at det kan virke ordenligt
-            ////else if (lastUpdateHealth > Health + AIModifiers.hungerHitpointsDamagePerSecond && Hunger > AIModifiers.maxHungerBeforeHitpointsDamage)
-            ////{
-            ////    underAttack = true;
-            ////}
+            //Mangler gameTime for at det kan virke ordenligt
+            //else if (lastUpdateHealth > Health + AIModifiers.hungerHitpointsDamagePerSecond && Hunger > AIModifiers.maxHungerBeforeHitpointsDamage)
+            //{
+            //    underAttack = true;
+            //}
             //else
             //{
             //    underAttack = false;
