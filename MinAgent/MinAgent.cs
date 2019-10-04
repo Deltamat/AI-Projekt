@@ -14,12 +14,14 @@ namespace MinAgent
         Random rnd;
         int lastUpdateHealth;
         bool underAttack = false;
+        State currentState = new StateFeed();
 
         //Only for randomization of movement
-        float moveX = 0;
-        float moveY = 0;
-        int delay;
-        Plant closePlant;
+        public float moveX = 0;
+        public float moveY = 0;
+        public int delay;
+        public Plant targetPlant;
+        public List<IEntity> plants;
 
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
@@ -39,7 +41,8 @@ namespace MinAgent
         public override IAction GetNextAction(List<IEntity> otherEntities)
         {
             List<Agent> agents = otherEntities.FindAll(a => a is Agent).ConvertAll<Agent>(a => (Agent)a);
-            List<IEntity> plants = otherEntities.FindAll(a => a is Plant);
+            plants = otherEntities.FindAll(a => a is Plant);
+            plants.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             //Checks if any non-allied agents are nearby and puts them in a list
             var closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
             //Checks if allied agents are nearby and puts them in a list
@@ -79,22 +82,7 @@ namespace MinAgent
 
             if (plants.Count > 0 && Hunger > 20f)
             {
-                if (closePlant == null) //if there are no focused plants
-                {
-                    closePlant = (Plant) plants[rnd.Next(plants.Count)]; //focuses on a nearby plant
-                }
-
-                if (AIVector.Distance(Position, closePlant.Position) >= AIModifiers.maxFeedingRange) //if agent is too far away from a plant to feed, move closer to it
-                {
-                    AIVector vector = new AIVector(closePlant.Position.X - Position.X, closePlant.Position.Y - Position.Y);
-                    moveX = vector.Normalize().X;
-                    moveY = vector.Normalize().Y;
-                    return new Move(new AIVector(moveX, moveY));
-                }
-                else //eat focused plant
-                {
-                    return new Feed(closePlant);
-                }
+                currentState = new StateFeed();
             }
             else if (plants.Count == 0 && Hunger > 20f && delay > 300) //choose new direction if there are no nearby plants
             {
@@ -104,9 +92,9 @@ namespace MinAgent
                 delay = 0;
             }
 
-            closePlant = null;
-
-            return new Move(new AIVector(moveX, moveY));
+            //targetPlant = null;
+            
+            return currentState.Execute(this);
         }
            
         public override void ActionResultCallback(bool success)
