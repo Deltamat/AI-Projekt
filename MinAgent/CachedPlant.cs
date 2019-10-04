@@ -17,6 +17,7 @@ namespace MinAgent
         public CachedPlant(Plant plant)
         {
             CachedId = plant.Id;
+            UpdateInformation(plant);
         }
 
         public void UpdateInformation(Plant plant)
