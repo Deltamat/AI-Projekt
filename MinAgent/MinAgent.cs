@@ -8,6 +8,7 @@ using AIFramework.Entities;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Drawing;
+using MinAgent.States;
 
 namespace MinAgent
 {
@@ -77,6 +78,7 @@ namespace MinAgent
                     currentState.Execute(this);
                 }
             }
+
             if (underAttack && delay < 100)
             {
                 moveX = rnd.Next(-1, 2);
@@ -102,13 +104,12 @@ namespace MinAgent
 
             if ((Position.X < Eyesight - 10 ||
                 Position.X + Eyesight - 10 > window.Width ||
-                Position.Y < Eyesight||
-                Position.Y + Eyesight -10 > window.Height - Eyesight) &&
+                Position.Y < Eyesight ||
+                Position.Y + Eyesight - 10 > window.Height - Eyesight - 10) &&
                 delay > 60 && plants.Count == 0)
             {
-                currentState = new StateMoveToCenter();
+                currentState = new StateReverseMove();
             }
-
             else if (Hunger > 20f)
             {
                 currentState = new StateFeed();
@@ -121,8 +122,12 @@ namespace MinAgent
                 delay = 0;
             }
 
-            //targetPlant = null;
-            
+            //Stops agents from standing still
+            if (moveX == 0 && moveY == 0)
+            {
+                moveX = rnd.Next(-1, 2);
+                moveY = rnd.Next(-1, 2);
+            }
 
             return currentState.Execute(this);
         }

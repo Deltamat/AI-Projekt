@@ -19,7 +19,7 @@ namespace MinAgent
             AIVector vector = new AIVector(MinAgent.window.Width * 0.5f - agent.Position.X, MinAgent.window.Height * 0.5f - agent.Position.Y);
             agent.moveX = vector.Normalize().X;
             agent.moveY = vector.Normalize().Y;
-            if (agent.Position == vector)
+            if (AIVector.Distance(agent.Position, vector) <= 5)
             {
                 agent.moveX = rnd.Next(-1, 2);
                 agent.moveY = rnd.Next(-1, 2);

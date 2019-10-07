@@ -57,6 +57,7 @@
     <Compile Include="States\StateFlee.cs" />
     <Compile Include="States\StateMoveToCenter.cs" />
     <Compile Include="States\StateProcreate.cs" />
+    <Compile Include="States\StateReverseMove.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AIFramework\AIFramework.csproj">
