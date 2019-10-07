@@ -64,7 +64,7 @@ namespace MinAgent
             
             //Agent rndAgent = null;
             //rndAgent = agents[rnd.Next(agents.Count)];
-
+             
             if (ProcreationCountDown == 0 && alliedAgents.Count == 0)
             {
                 currentState = new StateMoveToCenter();
