@@ -11,11 +11,11 @@ namespace MinAgent
 {
     class StateFeed : State
     {
-        Random rnd;
+        //Random rnd;
 
         public override IAction Execute(MinAgent agent)
         {
-            rnd = new Random();
+           // rnd = new Random();
 
             if (agent.plants.Count > 0)
             {
@@ -27,7 +27,7 @@ namespace MinAgent
                 return new Move(new AIVector(agent.moveX, agent.moveY));
             }
 
-            if (agent.targetPlant != null && AIVector.Distance(agent.Position, agent.targetPlant.Position) >= AIModifiers.maxFeedingRange) //if agent is too far away from a plant to feed, move closer to it
+            if (agent.targetPlant != null && AIVector.Distance(agent.Position, agent.targetPlant.Position) > AIModifiers.maxFeedingRange) //if agent is too far away from a plant to feed, move closer to it
             {
                 AIVector vector = new AIVector(agent.targetPlant.Position.X - agent.Position.X, agent.targetPlant.Position.Y - agent.Position.Y);
                 agent.moveX = vector.Normalize().X;

@@ -12,7 +12,7 @@ namespace MinAgent
 {
     class StateMoveToCenter : State
     {
-        Random rnd = new Random();
+        //Random rnd = new Random();
         public override IAction Execute(MinAgent agent)
         {
             Random rnd = new Random();
