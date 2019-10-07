@@ -100,11 +100,11 @@ namespace MinAgent
             
             lastUpdateHealth = Health;
 
-            if ((Position.X < Eyesight ||
-                Position.X + Eyesight > window.Width ||
-                Position.Y < Eyesight ||
-                Position.Y + Eyesight > window.Height) &&
-                delay > 60 && plants.Count == 0 && Hunger < 20)
+            if ((Position.X < Eyesight - 10 ||
+                Position.X + Eyesight - 10 > window.Width ||
+                Position.Y < Eyesight||
+                Position.Y + Eyesight -10 > window.Height - Eyesight) &&
+                delay > 60 && plants.Count == 0)
             {
                 currentState = new StateMoveToCenter();
             }
