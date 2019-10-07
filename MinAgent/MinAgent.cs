@@ -95,7 +95,7 @@ namespace MinAgent
                 Position.X + Eyesight > window.Width ||
                 Position.Y < Eyesight ||
                 Position.Y + Eyesight > window.Height) &&
-                delay > 60 && plants.Count == 0)
+                delay > 60 && plants.Count == 0 && Hunger < 20)
             {
                 currentState = new StateMoveToCenter();
             }
