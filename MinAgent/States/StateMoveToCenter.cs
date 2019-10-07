@@ -15,13 +15,14 @@ namespace MinAgent
         Random rnd = new Random();
         public override IAction Execute(MinAgent agent)
         {
-            if (agent.delay > 100)
+            Random rnd = new Random();
+            AIVector vector = new AIVector(MinAgent.window.Width * 0.5f - agent.Position.X, MinAgent.window.Height * 0.5f - agent.Position.Y);
+            agent.moveX = vector.Normalize().X;
+            agent.moveY = vector.Normalize().Y;
+            if (agent.Position == vector)
             {
-                //AIVector vector = new AIVector(MinAgent.window.Width * 0.5f - agent.Position.X, MinAgent.window.Height * 0.5f - agent.Position.Y);
-                AIVector vector = new AIVector(rnd.Next(0, MinAgent.window.Width + 1) - agent.Position.X, rnd.Next(0, MinAgent.window.Height + 1) - agent.Position.Y);
-                agent.moveX = vector.Normalize().X;
-                agent.moveY = vector.Normalize().Y;
-                return new Move(new AIVector(agent.moveX, agent.moveY));
+                agent.moveX = rnd.Next(-1, 2);
+                agent.moveY = rnd.Next(-1, 2);
             }
             return new Move(new AIVector(agent.moveX, agent.moveY));
         }

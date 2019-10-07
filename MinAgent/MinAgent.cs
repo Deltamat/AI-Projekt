@@ -32,12 +32,12 @@ namespace MinAgent
         {
             rnd = new Random();
             MovementSpeed = 140;
-            Strength = 9;
-            Health = 1;
-            Eyesight = 80;
-            Endurance = 20;
+            Strength = 0;
+            Health = 10;
+            Eyesight = 50;
+            Endurance = 50;
             Dodge = 0;
-
+            
             moveX = rnd.Next(-1, 2);
             moveY = rnd.Next(-1, 2);
         }
@@ -104,7 +104,7 @@ namespace MinAgent
                 Position.X + Eyesight > window.Width ||
                 Position.Y < Eyesight ||
                 Position.Y + Eyesight > window.Height) &&
-                delay > 60 && plants.Count == 0)
+                delay > 60 && plants.Count == 0 && Hunger < 20)
             {
                 currentState = new StateMoveToCenter();
             }
