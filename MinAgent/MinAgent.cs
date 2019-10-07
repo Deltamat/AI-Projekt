@@ -31,11 +31,11 @@ namespace MinAgent
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
-            MovementSpeed = 0;
+            MovementSpeed = 140;
             Strength = 0;
             Health = 10;
-            Eyesight = 80;
-            Endurance = 20;
+            Eyesight = 50;
+            Endurance = 50;
             Dodge = 0;
             
             moveX = rnd.Next(-1, 2);
@@ -91,15 +91,6 @@ namespace MinAgent
             
             lastUpdateHealth = Health;
 
-            if ((Position.X - 30 < window.Left ||
-                Position.X + 30 > window.Right ||
-                Position.Y - 30 < window.Top ||
-                Position.Y + 30 > window.Bottom) &&
-                delay > 300)
-            {
-                currentState = new StateMoveToCenter();
-            }
-
             if (Hunger > 20f)
             {
                 currentState = new StateFeed();
@@ -109,6 +100,16 @@ namespace MinAgent
                 moveX = rnd.Next(-1, 2);
                 moveY = rnd.Next(-1, 2);
 
+                delay = 0;
+            }
+
+            if ((Position.X - 30 < window.Left ||
+                Position.X + 30 > window.Right ||
+                Position.Y - 30 < window.Top ||
+                Position.Y + 30 > window.Bottom) &&
+                delay > 300)
+            {
+                currentState = new StateMoveToCenter();
                 delay = 0;
             }
 
