@@ -36,7 +36,7 @@ namespace MinAgent
             Health = 1;
             Eyesight = 80;
             Endurance = 20;
-            Dodge = 55;
+            Dodge = 0;
 
             moveX = rnd.Next(-1, 2);
             moveY = rnd.Next(-1, 2);

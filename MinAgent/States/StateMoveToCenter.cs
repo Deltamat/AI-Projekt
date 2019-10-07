@@ -12,11 +12,17 @@ namespace MinAgent
 {
     class StateMoveToCenter : State
     {
+        Random rnd = new Random();
         public override IAction Execute(MinAgent agent)
         {
-            AIVector vector = new AIVector(MinAgent.window.Width * 0.5f - agent.Position.X, MinAgent.window.Height * 0.5f - agent.Position.Y);
-            agent.moveX = vector.Normalize().X;
-            agent.moveY = vector.Normalize().Y;
+            if (agent.delay > 100)
+            {
+                //AIVector vector = new AIVector(MinAgent.window.Width * 0.5f - agent.Position.X, MinAgent.window.Height * 0.5f - agent.Position.Y);
+                AIVector vector = new AIVector(rnd.Next(0, MinAgent.window.Width + 1) - agent.Position.X, rnd.Next(0, MinAgent.window.Height + 1) - agent.Position.Y);
+                agent.moveX = vector.Normalize().X;
+                agent.moveY = vector.Normalize().Y;
+                return new Move(new AIVector(agent.moveX, agent.moveY));
+            }
             return new Move(new AIVector(agent.moveX, agent.moveY));
         }
     }
