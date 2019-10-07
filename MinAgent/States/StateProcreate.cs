@@ -25,6 +25,7 @@ namespace MinAgent
             }
             else
             {
+                
                 return new Move(new AIVector(agent.moveX, agent.moveY));
             }
         }

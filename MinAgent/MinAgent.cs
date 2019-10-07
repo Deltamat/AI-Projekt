@@ -18,10 +18,13 @@ namespace MinAgent
         bool underAttack = false; //gammel bool
         State currentState = new StateFeed();
         public static Rectangle window = Application.OpenForms[0].Bounds;
+        double deltaTime;
+        double prevTime;
 
         //Only for randomization of movement
         public float moveX = 0;
         public float moveY = 0;
+
         public int delay;
         public Plant targetPlant;
         public List<IEntity> plants;
@@ -44,6 +47,8 @@ namespace MinAgent
         
         public override IAction GetNextAction(List<IEntity> otherEntities)
         {
+            deltaTime = DateTime.Now.TimeOfDay.TotalMilliseconds - prevTime;
+
             List<Agent> agents = otherEntities.FindAll(a => a is Agent).ConvertAll<Agent>(a => (Agent)a);
             plants = otherEntities.FindAll(a => a is Plant);
             plants.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
@@ -122,8 +127,8 @@ namespace MinAgent
             }
 
             //targetPlant = null;
-            
 
+            prevTime = DateTime.Now.TimeOfDay.TotalMilliseconds;
             return currentState.Execute(this);
         }
            
