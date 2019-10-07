@@ -11,11 +11,11 @@ namespace MinAgent
 {
     class StateFeed : State
     {
-        Random rnd;
+        //Random rnd;
 
         public override IAction Execute(MinAgent agent)
         {
-            rnd = new Random();
+           // rnd = new Random();
 
             if (agent.plants.Count > 0)
             {
