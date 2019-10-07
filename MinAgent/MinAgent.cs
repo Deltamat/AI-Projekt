@@ -8,6 +8,7 @@ using AIFramework.Entities;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Drawing;
+using MinAgent.States;
 
 namespace MinAgent
 {
@@ -16,7 +17,7 @@ namespace MinAgent
         Random rnd;
         int lastUpdateHealth;
         bool underAttack = false; //gammel bool
-        State currentState = new StateFeed();
+        State currentState = new StateMoveToCenter();
         public static Rectangle window = Application.OpenForms[0].Bounds;
         double deltaTime;
         double prevTime;
@@ -60,15 +61,20 @@ namespace MinAgent
             closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
             closeEnemyAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             //Checks if allied agents are nearby and puts them in a list
-            alliedAgents = agents.FindAll(a => a is MinAgent);
+            alliedAgents = agents.FindAll(a => a is MinAgent && a != this);
             alliedAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             
             delay++;
-
+            
+            
             //Agent rndAgent = null;
             //rndAgent = agents[rnd.Next(agents.Count)];
 
-            if (ProcreationCountDown == 0)
+            if (ProcreationCountDown == 0 && alliedAgents.Count == 0)
+            {
+                currentState = new StateMoveToCenter();
+            }
+            else if (ProcreationCountDown == 0)
             {
                 currentState = new StateProcreate();
             }
@@ -82,6 +88,7 @@ namespace MinAgent
                     currentState.Execute(this);
                 }
             }
+
             if (underAttack && delay < 100)
             {
                 moveX = rnd.Next(-1, 2);
@@ -107,13 +114,12 @@ namespace MinAgent
 
             if ((Position.X < Eyesight - 10 ||
                 Position.X + Eyesight - 10 > window.Width ||
-                Position.Y < Eyesight||
-                Position.Y + Eyesight -10 > window.Height - Eyesight) &&
+                Position.Y < Eyesight ||
+                Position.Y + Eyesight - 10 > window.Height - Eyesight - 10) &&
                 delay > 60 && plants.Count == 0)
             {
-                currentState = new StateMoveToCenter();
+                currentState = new StateReverseMove();
             }
-
             else if (Hunger > 20f)
             {
                 currentState = new StateFeed();
@@ -126,7 +132,13 @@ namespace MinAgent
                 delay = 0;
             }
 
-            //targetPlant = null;
+            //Stops agents from standing still
+            if (moveX == 0 && moveY == 0)
+            {
+                moveX = rnd.Next(-1, 2);
+                moveY = rnd.Next(-1, 2);
+            }
+            
 
             prevTime = DateTime.Now.TimeOfDay.TotalMilliseconds;
             return currentState.Execute(this);
