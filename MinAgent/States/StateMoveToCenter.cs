@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using AIFramework;
 using AIFramework.Actions;
+using AIFramework.Entities;
 
 namespace MinAgent
 {

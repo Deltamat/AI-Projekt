@@ -15,7 +15,7 @@ namespace MinAgent
     {
         Random rnd;
         int lastUpdateHealth;
-        bool underAttack = false;
+        bool underAttack = false; //gammel bool
         State currentState = new StateFeed();
         public static Rectangle window = Application.OpenForms[0].Bounds;
 
@@ -63,17 +63,26 @@ namespace MinAgent
             //Agent rndAgent = null;
             //rndAgent = agents[rnd.Next(agents.Count)];
 
-            if (ProcreationCountDown == 0 && alliedAgents.Count() > 1)
+            if (ProcreationCountDown == 0)
             {
                 currentState = new StateProcreate();
             }
-            
-            foreach (var item in closeEnemyAgents)
+
+            foreach (var enemy in closeEnemyAgents)
             {
-                if (AIVector.Distance(Position, item.Position) <= AIModifiers.maxMeleeAttackRange)
+                if (AIVector.Distance(Position, enemy.Position) <= AIModifiers.maxMeleeAttackRange * 2)
                 {
                     underAttack = true;
+                    currentState = new StateFlee();
+                    currentState.Execute(this);
                 }
+            }
+            if (underAttack && delay < 100)
+            {
+                moveX = rnd.Next(-1, 2);
+                moveY = rnd.Next(-1, 2);
+                delay = 0;
+                underAttack = false;
             }
             //if (lastUpdateHealth > Health && Hunger < AIModifiers.maxHungerBeforeHitpointsDamage)
             //{
@@ -91,7 +100,16 @@ namespace MinAgent
             
             lastUpdateHealth = Health;
 
-            if (Hunger > 20f)
+            if ((Position.X < Eyesight ||
+                Position.X + Eyesight > window.Width ||
+                Position.Y < Eyesight ||
+                Position.Y + Eyesight > window.Height) &&
+                delay > 60 && plants.Count == 0)
+            {
+                currentState = new StateMoveToCenter();
+            }
+
+            else if (Hunger > 20f)
             {
                 currentState = new StateFeed();
             }
@@ -100,16 +118,6 @@ namespace MinAgent
                 moveX = rnd.Next(-1, 2);
                 moveY = rnd.Next(-1, 2);
 
-                delay = 0;
-            }
-
-            if ((Position.X - 30 < window.Left ||
-                Position.X + 30 > window.Right ||
-                Position.Y - 30 < window.Top ||
-                Position.Y + 30 > window.Bottom) &&
-                delay > 300)
-            {
-                currentState = new StateMoveToCenter();
                 delay = 0;
             }
 
