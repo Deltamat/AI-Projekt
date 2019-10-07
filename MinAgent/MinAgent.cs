@@ -17,7 +17,7 @@ namespace MinAgent
         Random rnd;
         int lastUpdateHealth;
         bool underAttack = false; //gammel bool
-        State currentState = new StateFeed();
+        State currentState = new StateMoveToCenter();
         public static Rectangle window = Application.OpenForms[0].Bounds;
 
         //Only for randomization of movement
@@ -56,15 +56,20 @@ namespace MinAgent
             closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
             closeEnemyAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             //Checks if allied agents are nearby and puts them in a list
-            alliedAgents = agents.FindAll(a => a is MinAgent);
+            alliedAgents = agents.FindAll(a => a is MinAgent && a != this);
             alliedAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             
             delay++;
-
+            
+            
             //Agent rndAgent = null;
             //rndAgent = agents[rnd.Next(agents.Count)];
 
-            if (ProcreationCountDown == 0)
+            if (ProcreationCountDown == 0 && alliedAgents.Count == 0)
+            {
+                currentState = new StateMoveToCenter();
+            }
+            else if (ProcreationCountDown == 0)
             {
                 currentState = new StateProcreate();
             }
@@ -128,6 +133,7 @@ namespace MinAgent
                 moveX = rnd.Next(-1, 2);
                 moveY = rnd.Next(-1, 2);
             }
+            
 
             return currentState.Execute(this);
         }

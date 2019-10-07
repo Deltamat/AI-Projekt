@@ -10,23 +10,33 @@ namespace MinAgent
 {
     class StateProcreate : State
     {
+        MinAgent lover;
         public override IAction Execute(MinAgent agent)
         {
-            if (agent.alliedAgents.Count() > 1 && agent.alliedAgents[1].ProcreationCountDown == 0 && AIVector.Distance(agent.Position, agent.alliedAgents[1].Position) < AIModifiers.maxProcreateRange)
+            lover = null;
+            foreach (MinAgent allied in agent.alliedAgents)
             {
-                return new Procreate(agent.alliedAgents[1]);
+                if (allied.ProcreationCountDown == 0)
+                {
+                    lover = allied;
+                }
             }
-            else if (agent.alliedAgents.Count() > 1 && agent.alliedAgents[1].ProcreationCountDown == 0 && AIVector.Distance(agent.Position, agent.alliedAgents[1].Position) > AIModifiers.maxProcreateRange)
+
+            if (lover != null)
             {
-                AIVector vector = new AIVector(agent.alliedAgents[1].Position.X - agent.Position.X, agent.alliedAgents[1].Position.Y - agent.Position.Y);
-                agent.moveX = vector.Normalize().X;
-                agent.moveY = vector.Normalize().Y;
-                return new Move(new AIVector(agent.moveX, agent.moveY));
+                if (agent.alliedAgents.Count() > 1 && agent.alliedAgents[0].ProcreationCountDown == 0 && AIVector.Distance(agent.Position, agent.alliedAgents[0].Position) < AIModifiers.maxProcreateRange)
+                {
+                    return new Procreate(agent.alliedAgents[0]);
+                }
+                else if (agent.alliedAgents.Count() > 1 && agent.alliedAgents[0].ProcreationCountDown == 0 && AIVector.Distance(agent.Position, agent.alliedAgents[0].Position) > AIModifiers.maxProcreateRange)
+                {
+                    AIVector vector = new AIVector(agent.alliedAgents[0].Position.X - agent.Position.X, agent.alliedAgents[0].Position.Y - agent.Position.Y);
+                    agent.moveX = vector.Normalize().X;
+                    agent.moveY = vector.Normalize().Y;
+                    return new Move(new AIVector(agent.moveX, agent.moveY));
+                }
             }
-            else
-            {
-                return new Move(new AIVector(agent.moveX, agent.moveY));
-            }
+            return new Move(new AIVector(agent.moveX, agent.moveY));
         }
     }
 }
