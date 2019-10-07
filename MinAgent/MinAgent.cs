@@ -32,10 +32,10 @@ namespace MinAgent
         {
             rnd = new Random();
             MovementSpeed = 140;
-            Strength = 9;
-            Health = 1;
-            Eyesight = 80;
-            Endurance = 20;
+            Strength = 0;
+            Health = 10;
+            Eyesight = 50;
+            Endurance = 50;
             Dodge = 0;
             
             moveX = rnd.Next(-1, 2);
@@ -67,13 +67,22 @@ namespace MinAgent
             {
                 currentState = new StateProcreate();
             }
-            
-            foreach (var item in closeEnemyAgents)
+
+            foreach (var enemy in closeEnemyAgents)
             {
-                if (AIVector.Distance(Position, item.Position) <= AIModifiers.maxMeleeAttackRange)
+                if (AIVector.Distance(Position, enemy.Position) <= AIModifiers.maxMeleeAttackRange * 2)
                 {
                     underAttack = true;
+                    currentState = new StateFlee();
+                    currentState.Execute(this);
                 }
+            }
+            if (underAttack && delay < 100)
+            {
+                moveX = rnd.Next(-1, 2);
+                moveY = rnd.Next(-1, 2);
+                delay = 0;
+                underAttack = false;
             }
             //if (lastUpdateHealth > Health && Hunger < AIModifiers.maxHungerBeforeHitpointsDamage)
             //{
