@@ -21,6 +21,7 @@ namespace MinAgent
         public static Rectangle window = Application.OpenForms[0].Bounds;
         double deltaTime;
         double prevTime;
+        public int maxHealth;
 
         //Only for randomization of movement
         public float moveX = 0;
@@ -41,7 +42,8 @@ namespace MinAgent
             Eyesight = 50;
             Endurance = 30;
             Dodge = 0;
-            
+
+            maxHealth = Health;
             moveX = rnd.Next(-1, 2);
             moveY = rnd.Next(-1, 2);
         }
@@ -63,8 +65,16 @@ namespace MinAgent
             alliedAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             
             delay++;
-            
-            
+
+            foreach (var item in alliedAgents)
+            {
+                MinAgent agent = (MinAgent)item;
+                if (agent.currentState is StateAttack)
+                {
+                    // move towards the friendly and assists with the fight
+                }
+            }
+
             foreach (var enemy in closeEnemyAgents)
             {
                 if (AIVector.Distance(Position, enemy.Position) <= AIModifiers.maxMeleeAttackRange * 2)

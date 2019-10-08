@@ -31,7 +31,8 @@ namespace MinAgent
             {
                 foreach (var allied in agent.alliedAgents)
                 {
-                    if (allied.Hunger > agent.Hunger)
+                    MinAgent alliedAgent = (MinAgent)allied;
+                    if (allied.Hunger > agent.Hunger || (allied.Health < agent.Health && allied.Hunger > allied.Endurance))
                     {
                         return new Move(new AIVector(agent.moveX, agent.moveY));
                     }
