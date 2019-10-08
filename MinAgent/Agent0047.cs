@@ -12,7 +12,7 @@ using MinAgent.States;
 
 namespace MinAgent
 {
-    public class MinAgent : Agent
+    public class Agent0047 : Agent
     {
         Random rnd;
         int lastUpdateHealth;
@@ -21,6 +21,7 @@ namespace MinAgent
         public static Rectangle window = Application.OpenForms[0].Bounds;
         double deltaTime;
         double prevTime;
+        public int maxHealth;
 
         //Only for randomization of movement
         public float moveX = 0;
@@ -32,7 +33,7 @@ namespace MinAgent
         public List<Agent> closeEnemyAgents;
         public List<Agent> alliedAgents;
 
-        public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
+        public Agent0047(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
             MovementSpeed = 50;
@@ -41,7 +42,8 @@ namespace MinAgent
             Eyesight = 50;
             Endurance = 30;
             Dodge = 0;
-            
+
+            maxHealth = Health;
             moveX = rnd.Next(-1, 2);
             moveY = rnd.Next(-1, 2);
         }
@@ -56,24 +58,32 @@ namespace MinAgent
             
             
             //Checks if any non-allied agents are nearby and puts them in a list
-            closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
+            closeEnemyAgents = agents.FindAll(a => !(a is Agent0047));
             closeEnemyAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             //Checks if allied agents are nearby and puts them in a list
-            alliedAgents = agents.FindAll(a => a is MinAgent && a != this);
+            alliedAgents = agents.FindAll(a => a is Agent0047 && a != this);
             alliedAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             
             delay++;
 
-           
-            //foreach (var enemy in closeEnemyAgents)
-            //{
-            //    if (AIVector.Distance(Position, enemy.Position) <= AIModifiers.maxMeleeAttackRange * 2)
-            //    {
-            //        underAttack = true;
-            //        currentState = new StateFlee();
-            //        currentState.Execute(this);
-            //    }
-            //}
+            foreach (var item in alliedAgents)
+            {
+                Agent0047 agent = (Agent0047)item;
+                if (agent.currentState is StateAttack)
+                {
+                    // move towards the friendly and assists with the fight
+                }
+            }
+
+            foreach (var enemy in closeEnemyAgents)
+            {
+                if (AIVector.Distance(Position, enemy.Position) <= AIModifiers.maxMeleeAttackRange * 2)
+                {
+                    underAttack = true;
+                    currentState = new StateFlee();
+                    currentState.Execute(this);
+                }
+            }
 
             if (underAttack && closeEnemyAgents.Count == 0)
             {

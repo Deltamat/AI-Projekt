@@ -15,7 +15,7 @@ namespace MinAgent
         AIVector halfwayDistance;
 
         Random rnd = new Random();
-        public override IAction Execute(MinAgent agent)
+        public override IAction Execute(Agent0047 agent)
         {
             //Resets variables
             longestSpace = 0f;

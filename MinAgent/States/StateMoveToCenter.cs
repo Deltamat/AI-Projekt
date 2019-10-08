@@ -13,10 +13,10 @@ namespace MinAgent
     class StateMoveToCenter : State
     {
         //Random rnd = new Random();
-        public override IAction Execute(MinAgent agent)
+        public override IAction Execute(Agent0047 agent)
         {
             Random rnd = new Random();
-            AIVector vector = new AIVector(MinAgent.window.Width * 0.5f - agent.Position.X, MinAgent.window.Height * 0.5f - agent.Position.Y);
+            AIVector vector = new AIVector(Agent0047.window.Width * 0.5f - agent.Position.X, Agent0047.window.Height * 0.5f - agent.Position.Y);
             agent.moveX = vector.X;
             agent.moveY = vector.Y;
             if (AIVector.Distance(agent.Position, vector) <= 5)

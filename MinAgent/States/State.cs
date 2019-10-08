@@ -11,6 +11,6 @@ namespace MinAgent
 {
     public abstract class State
     {
-        public abstract IAction Execute(MinAgent agent);
+        public abstract IAction Execute(Agent0047 agent);
     }
 }

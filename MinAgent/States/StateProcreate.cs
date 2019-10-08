@@ -10,11 +10,11 @@ namespace MinAgent
 {
     class StateProcreate : State
     {
-        MinAgent lover;
-        public override IAction Execute(MinAgent agent)
+        Agent0047 lover;
+        public override IAction Execute(Agent0047 agent)
         {
             lover = null;
-            foreach (MinAgent allied in agent.alliedAgents)
+            foreach (Agent0047 allied in agent.alliedAgents)
             {
                 if (allied.ProcreationCountDown == 0)
                 {
