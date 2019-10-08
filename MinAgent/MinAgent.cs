@@ -69,7 +69,7 @@ namespace MinAgent
             
             //Agent rndAgent = null;
             //rndAgent = agents[rnd.Next(agents.Count)];
-
+             
             if (ProcreationCountDown == 0 && alliedAgents.Count == 0)
             {
                 currentState = new StateMoveToCenter();
@@ -146,7 +146,7 @@ namespace MinAgent
            
         public override void ActionResultCallback(bool success)
         {
-            //Do nothing - AI dont take success of an action into account
+            //Do nothing - AI dont take success of an action into account yet
         }
     }
 }

@@ -31,8 +31,8 @@ namespace MinAgent
                 else if (agent.alliedAgents.Count() > 1 && agent.alliedAgents[0].ProcreationCountDown == 0 && AIVector.Distance(agent.Position, agent.alliedAgents[0].Position) > AIModifiers.maxProcreateRange)
                 {
                     AIVector vector = new AIVector(agent.alliedAgents[0].Position.X - agent.Position.X, agent.alliedAgents[0].Position.Y - agent.Position.Y);
-                    agent.moveX = vector.Normalize().X;
-                    agent.moveY = vector.Normalize().Y;
+                    agent.moveX = vector.X;
+                    agent.moveY = vector.Y;
                     return new Move(new AIVector(agent.moveX, agent.moveY));
                 }
             }

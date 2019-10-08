@@ -30,8 +30,8 @@ namespace MinAgent
             if (agent.targetPlant != null && AIVector.Distance(agent.Position, agent.targetPlant.Position) > AIModifiers.maxFeedingRange) //if agent is too far away from a plant to feed, move closer to it
             {
                 AIVector vector = new AIVector(agent.targetPlant.Position.X - agent.Position.X, agent.targetPlant.Position.Y - agent.Position.Y);
-                agent.moveX = vector.Normalize().X;
-                agent.moveY = vector.Normalize().Y;
+                agent.moveX = vector.X;
+                agent.moveY = vector.Y;
                 return new Move(new AIVector(agent.moveX, agent.moveY));
             }
             else //eat focused plant
