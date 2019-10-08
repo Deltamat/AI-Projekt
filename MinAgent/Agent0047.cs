@@ -12,7 +12,7 @@ using MinAgent.States;
 
 namespace MinAgent
 {
-    public class MinAgent : Agent
+    public class Agent0047 : Agent
     {
         Random rnd;
         int lastUpdateHealth;
@@ -33,7 +33,7 @@ namespace MinAgent
         public List<Agent> closeEnemyAgents;
         public List<Agent> alliedAgents;
 
-        public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
+        public Agent0047(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
             MovementSpeed = 50;
@@ -58,17 +58,17 @@ namespace MinAgent
             
             
             //Checks if any non-allied agents are nearby and puts them in a list
-            closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
+            closeEnemyAgents = agents.FindAll(a => !(a is Agent0047));
             closeEnemyAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             //Checks if allied agents are nearby and puts them in a list
-            alliedAgents = agents.FindAll(a => a is MinAgent && a != this);
+            alliedAgents = agents.FindAll(a => a is Agent0047 && a != this);
             alliedAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             
             delay++;
 
             foreach (var item in alliedAgents)
             {
-                MinAgent agent = (MinAgent)item;
+                Agent0047 agent = (Agent0047)item;
                 if (agent.currentState is StateAttack)
                 {
                     // move towards the friendly and assists with the fight

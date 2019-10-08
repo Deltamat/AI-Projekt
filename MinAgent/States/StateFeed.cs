@@ -13,7 +13,7 @@ namespace MinAgent
     {
         //Random rnd;
 
-        public override IAction Execute(MinAgent agent)
+        public override IAction Execute(Agent0047 agent)
         {
            // rnd = new Random();
 
@@ -31,7 +31,7 @@ namespace MinAgent
             {
                 foreach (var allied in agent.alliedAgents)
                 {
-                    MinAgent alliedAgent = (MinAgent)allied;
+                    Agent0047 alliedAgent = (Agent0047)allied;
                     if (allied.Hunger > agent.Hunger || (allied.Health < agent.Health && allied.Hunger > allied.Endurance))
                     {
                         return new Move(new AIVector(agent.moveX, agent.moveY));

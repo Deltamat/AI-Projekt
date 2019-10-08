@@ -48,8 +48,8 @@
   <ItemGroup>
     <Compile Include="CachedAgent.cs" />
     <Compile Include="CachedPlant.cs" />
-    <Compile Include="MinAgent.cs" />
-    <Compile Include="MinAgentFactory.cs" />
+    <Compile Include="Agent0047.cs" />
+    <Compile Include="Agent0047Factory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="States\State.cs" />
     <Compile Include="States\StateAttack.cs" />

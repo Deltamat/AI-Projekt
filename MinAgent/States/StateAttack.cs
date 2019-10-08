@@ -10,7 +10,7 @@ namespace MinAgent
 {
     class StateAttack : State
     {
-        public override IAction Execute(MinAgent agent)
+        public override IAction Execute(Agent0047 agent)
         {
             if (agent.closeEnemyAgents.Count > 0 && agent.Strength > 0)
             {
