@@ -9,7 +9,7 @@ using AIFramework.Entities;
 
 namespace MinAgent
 {
-    abstract class State
+    public abstract class State
     {
         public abstract IAction Execute(MinAgent agent);
     }
