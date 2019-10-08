@@ -27,6 +27,17 @@ namespace MinAgent
                 return new Move(new AIVector(agent.moveX, agent.moveY));
             }
 
+            if (agent.alliedAgents.Count > 0)
+            {
+                foreach (var allied in agent.alliedAgents)
+                {
+                    if (allied.Hunger > agent.Hunger)
+                    {
+                        return new Move(new AIVector(agent.moveX, agent.moveY));
+                    }
+                }
+            }
+
             if (agent.targetPlant != null && AIVector.Distance(agent.Position, agent.targetPlant.Position) > AIModifiers.maxFeedingRange) //if agent is too far away from a plant to feed, move closer to it
             {
                 AIVector vector = new AIVector(agent.targetPlant.Position.X - agent.Position.X, agent.targetPlant.Position.Y - agent.Position.Y);
