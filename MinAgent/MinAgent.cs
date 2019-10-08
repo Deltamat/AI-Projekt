@@ -140,7 +140,7 @@ namespace MinAgent
            
         public override void ActionResultCallback(bool success)
         {
-            //Do nothing - AI dont take success of an action into account
+            //Do nothing - AI dont take success of an action into account yet
         }
     }
 }
