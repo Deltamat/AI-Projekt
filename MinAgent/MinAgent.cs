@@ -17,7 +17,7 @@ namespace MinAgent
         Random rnd;
         int lastUpdateHealth;
         bool underAttack = false; //gammel bool
-        State currentState = new StateMoveToCenter();
+        public State currentState = new StateMoveToCenter();
         public static Rectangle window = Application.OpenForms[0].Bounds;
         double deltaTime;
         double prevTime;
@@ -35,8 +35,8 @@ namespace MinAgent
         public MinAgent(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
             rnd = new Random();
-            MovementSpeed = 140;
-            Strength = 0;
+            MovementSpeed = 40;
+            Strength = 100;
             Health = 10;
             Eyesight = 50;
             Endurance = 50;
@@ -137,6 +137,10 @@ namespace MinAgent
             {
                 moveX = rnd.Next(-1, 2);
                 moveY = rnd.Next(-1, 2);
+            }
+            if (closeEnemyAgents.Count > 0 && closeEnemyAgents[0].Strength < Strength)
+            {
+                currentState = new StateAttack();
             }
             
 
