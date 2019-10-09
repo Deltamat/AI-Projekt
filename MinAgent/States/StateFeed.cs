@@ -13,7 +13,7 @@ namespace MinAgent
     {
         //Random rnd;
 
-        public override IAction Execute(MinAgent agent)
+        public override IAction Execute(Agent0047 agent)
         {
            // rnd = new Random();
 
@@ -25,6 +25,18 @@ namespace MinAgent
             {
                 agent.targetPlant = null;
                 return new Move(new AIVector(agent.moveX, agent.moveY));
+            }
+
+            if (agent.alliedAgents.Count > 0)
+            {
+                foreach (var allied in agent.alliedAgents)
+                {
+                    Agent0047 alliedAgent = (Agent0047)allied;
+                    if (allied.Hunger > agent.Hunger || (allied.Health < agent.Health && allied.Hunger > allied.Endurance))
+                    {
+                        return new Move(new AIVector(agent.moveX, agent.moveY));
+                    }
+                }
             }
 
             if (agent.targetPlant != null && AIVector.Distance(agent.Position, agent.targetPlant.Position) > AIModifiers.maxFeedingRange) //if agent is too far away from a plant to feed, move closer to it

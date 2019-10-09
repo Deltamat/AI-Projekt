@@ -12,7 +12,7 @@ namespace ExampleAI
     public class RandomAgent : Agent
     {
         Random rnd;
-
+        public List<Agent> closeEnemyAgents;
         //Only for randomization of movement
         float moveX = 0;
         float moveY = 0;
@@ -42,10 +42,16 @@ namespace ExampleAI
 
             List<Agent> agents = otherEntities.FindAll(a=>a is Agent).ConvertAll<Agent>(a=>(Agent)a);
             List<IEntity> plants = otherEntities.FindAll(a=>a is Plant);
-
+            closeEnemyAgents = agents.FindAll(a => !(a is RandomAgent));
+            closeEnemyAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
 
             Agent rndAgent = null;
             rndAgent = agents[rnd.Next(agents.Count)];
+
+            if (closeEnemyAgents.Count > 0 && AIVector.Distance(Position, closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange)
+            {
+                return new Attack(closeEnemyAgents[0]);
+            }
 
             switch (rnd.Next(5))
             {
