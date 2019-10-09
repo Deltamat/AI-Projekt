@@ -18,7 +18,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework and Game of life"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExampleAIs", "ExampleAIs", "{1FB68FDD-2855-4213-AA08-52A79D5082D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinAgent", "MinAgent\MinAgent.csproj", "{BD5B3A54-4182-41EA-8CEC-C5B98F8776ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Agent0047", "Agent0047\Agent0047.csproj", "{BD5B3A54-4182-41EA-8CEC-C5B98F8776ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
