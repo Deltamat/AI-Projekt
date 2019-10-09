@@ -24,9 +24,9 @@ namespace ExampleAI
             MovementSpeed = 35;
             Strength= 35;
             Health= 70;
-            Eyesight= 30;
+            Eyesight= 80;
             Endurance= 25;
-            Dodge= 55;
+            Dodge= 5;
 
 
             moveX = rnd.Next(-1, 2);

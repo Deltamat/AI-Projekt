@@ -9,7 +9,7 @@ using AIFramework.Entities;
 
 namespace MinAgent
 {
-    class CachedAgent : Agent
+    public class CachedAgent : Agent
     {
         public Type OriginalType { get; private set; }
         public AIVector CachedPos { get; private set; }
