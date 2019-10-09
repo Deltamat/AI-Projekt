@@ -56,7 +56,6 @@ namespace MinAgent
             plants = otherEntities.FindAll(a => a is Plant);
             plants.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             
-            
             //Checks if any non-allied agents are nearby and puts them in a list
             closeEnemyAgents = agents.FindAll(a => !(a is Agent0047));
             closeEnemyAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
@@ -85,22 +84,32 @@ namespace MinAgent
                 }
             }
 
-            if (underAttack && delay < 100)
+            if (underAttack && closeEnemyAgents.Count == 0)
             {
                 moveX = rnd.Next(-1, 2);
                 moveY = rnd.Next(-1, 2);
                 delay = 0;
                 underAttack = false;
             }
-            
-            
+
+
             lastUpdateHealth = Health;
 
+           
+            if (ProcreationCountDown == 0 && alliedAgents.Count == 0)
+            {
+                currentState = new StateMoveToCenter();
+            }
+            else if (ProcreationCountDown == 0)
+            {
+                currentState = new StateProcreate();
+            }
+
             if ((Position.X < Eyesight - 10 ||
-                Position.X + Eyesight - 10 > window.Width ||
-                Position.Y < Eyesight ||
-                Position.Y + Eyesight - 10 > window.Height - Eyesight - 10) &&
-                delay > 60 && plants.Count == 0)
+               Position.X + Eyesight - 10 > window.Width ||
+               Position.Y < Eyesight ||
+               Position.Y + Eyesight - 10 > window.Height - Eyesight - 10) &&
+               delay > 60 && plants.Count == 0)
             {
                 currentState = new StateReverseMove();
             }
@@ -115,16 +124,6 @@ namespace MinAgent
 
                 delay = 0;
             }
-            if (ProcreationCountDown == 0 && alliedAgents.Count == 0)
-            {
-                currentState = new StateMoveToCenter();
-            }
-            else if (ProcreationCountDown == 0)
-            {
-                currentState = new StateProcreate();
-            }
-
-            
             //If either in melee attack range of an enemy agent or hunger below 40 while it sees and enemy agent, the agent will attack/move closer.
             if (closeEnemyAgents.Count > 0 && (closeEnemyAgents[0].Strength < Strength && Hunger < 40 || AIVector.Distance(this.Position, closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange))
             {
