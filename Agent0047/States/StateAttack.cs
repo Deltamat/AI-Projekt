@@ -12,22 +12,25 @@ namespace MinAgent
     {
         public override IAction Execute(Agent0047 agent)
         {
-            if (agent.closeEnemyAgents.Count > 0 && agent.Strength > 0)
+            /*if(agent.closeEnemyAgents.Count > agent.alliedAgents.Count)
+            {   //if outnumbered flee
+                return new StateFlee().Execute(agent);
+            }
+            else */if (agent.closeEnemyAgents.Count > 0 && AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange)
+            {
+                //attack
+                return new Attack(agent.closeEnemyAgents[0]);
+            }
+            else if(agent.closeEnemyAgents.Count > 0)
             {
                 //move closer if out of range
-                if (AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) > AIModifiers.maxMeleeAttackRange)
-                {
-                    AIVector vectorToEnemyAgentPosition = agent.closeEnemyAgents[0].Position - agent.Position;
-                    return new Move(vectorToEnemyAgentPosition);
-                }
-                else //attack
-                {
-                    return new Attack(agent.closeEnemyAgents[0]);
-                }
+                AIVector vectorToEnemyAgentPosition = agent.closeEnemyAgents[0].Position - agent.Position;
+                return new Move(vectorToEnemyAgentPosition);
             }
             else
             {
-                return new StateFlee().Execute(agent);
+                //if there are no closeEnemyAgents they are either dead/gone somewhere out of vision range.
+                return new StateMoveToCenter().Execute(agent);
             }
         }
     }
