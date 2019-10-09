@@ -54,9 +54,6 @@ namespace MinAgent
             plants = otherEntities.FindAll(a => a is Plant);
             plants.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             
-            
-            //foreach (var plant in plants.OrderBy(c => AIVector.Distance(Position, c.Position))) ;
-            
             //Checks if any non-allied agents are nearby and puts them in a list
             closeEnemyAgents = agents.FindAll(a => !(a is MinAgent));
             closeEnemyAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
