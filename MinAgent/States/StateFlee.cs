@@ -64,8 +64,8 @@ namespace MinAgent
         private AIVector RotateVector(AIVector vector, double angle)
         {
             angle = -angle * (Math.PI / 180);
-            var cos = Math.Cos(angle);
-            var sin = Math.Sin(angle);
+            double cos = Math.Cos(angle);
+            double sin = Math.Sin(angle);
             return new AIVector((float)cos * vector.X - (float)sin * vector.Y, (float)sin * vector.X + (float)cos * vector.Y); 
         }
     }

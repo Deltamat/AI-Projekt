@@ -29,7 +29,7 @@ namespace MinAgent
 
             if (agent.alliedAgents.Count > 0)
             {
-                foreach (var allied in agent.alliedAgents)
+                foreach (Agent allied in agent.alliedAgents)
                 {
                     Agent0047 alliedAgent = (Agent0047)allied;
                     if (allied.Hunger > agent.Hunger || (allied.Health < agent.Health && allied.Hunger > allied.Endurance))

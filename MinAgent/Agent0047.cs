@@ -65,16 +65,16 @@ namespace MinAgent
             
             delay++;
 
-            foreach (var item in alliedAgents)
+            foreach (Agent allied in alliedAgents)
             {
-                Agent0047 agent = (Agent0047)item;
+                Agent0047 agent = (Agent0047)allied;
                 if (agent.currentState is StateAttack)
                 {
                     // move towards the friendly and assists with the fight
                 }
             }
 
-            foreach (var enemy in closeEnemyAgents)
+            foreach (Agent enemy in closeEnemyAgents)
             {
                 if (AIVector.Distance(Position, enemy.Position) <= AIModifiers.maxMeleeAttackRange * 2)
                 {
@@ -95,7 +95,7 @@ namespace MinAgent
 
             lastUpdateHealth = Health;
 
-           
+            
             if (ProcreationCountDown == 0 && alliedAgents.Count == 0)
             {
                 currentState = new StateMoveToCenter();
@@ -124,11 +124,13 @@ namespace MinAgent
 
                 delay = 0;
             }
+
             //If either in melee attack range of an enemy agent or hunger below 40 while it sees and enemy agent, the agent will attack/move closer.
             if (closeEnemyAgents.Count > 0 && (closeEnemyAgents[0].Strength < Strength && Hunger < 40 || AIVector.Distance(this.Position, closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange))
             {
                 currentState = new StateAttack();
             }
+
             //Stops agents from standing still
             if (moveX == 0 && moveY == 0)
             {

@@ -17,7 +17,7 @@ namespace MinAgent
                 //move closer if out of range
                 if (AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) > AIModifiers.maxMeleeAttackRange)
                 {
-                    var vectorToEnemyAgentPosition = agent.closeEnemyAgents[0].Position - agent.Position;
+                    AIVector vectorToEnemyAgentPosition = agent.closeEnemyAgents[0].Position - agent.Position;
                     return new Move(vectorToEnemyAgentPosition);
                 }
                 else //attack
