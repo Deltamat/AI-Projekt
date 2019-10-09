@@ -15,7 +15,6 @@ namespace MinAgent
     public class Agent0047 : Agent
     {
         Random rnd;
-        int lastUpdateHealth;
         bool underAttack = false; //gammel bool
         public State currentState = new StateMoveToCenter();
         public static Rectangle window = Application.OpenForms[0].Bounds;
@@ -65,35 +64,26 @@ namespace MinAgent
             
             delay++;
 
-            foreach (Agent allied in alliedAgents)
-            {
-                Agent0047 agent = (Agent0047)allied;
-                if (agent.currentState is StateAttack)
-                {
-                    // move towards the friendly and assists with the fight
-                }
-            }
+            
 
-            foreach (Agent enemy in closeEnemyAgents)
-            {
-                if (AIVector.Distance(Position, enemy.Position) <= AIModifiers.maxMeleeAttackRange * 2)
-                {
-                    underAttack = true;
-                    currentState = new StateFlee();
-                    currentState.Execute(this);
-                }
-            }
+            //foreach (Agent enemy in closeEnemyAgents)
+            //{
+            //    if (AIVector.Distance(Position, enemy.Position) <= AIModifiers.maxMeleeAttackRange * 2)
+            //    {
+            //        underAttack = true;
+            //        currentState = new StateFlee();
+            //        currentState.Execute(this);
+            //    }
+            //}
 
-            if (underAttack && closeEnemyAgents.Count == 0)
-            {
-                moveX = rnd.Next(-1, 2);
-                moveY = rnd.Next(-1, 2);
-                delay = 0;
-                underAttack = false;
-            }
-
-
-            lastUpdateHealth = Health;
+            //if (underAttack && closeEnemyAgents.Count == 0)
+            //{
+            //    moveX = rnd.Next(-1, 2);
+            //    moveY = rnd.Next(-1, 2);
+            //    delay = 0;
+            //    underAttack = false;
+            //}
+            
 
             
             if (ProcreationCountDown == 0 && alliedAgents.Count == 0)
@@ -105,6 +95,7 @@ namespace MinAgent
                 currentState = new StateProcreate();
             }
 
+            //Stops the agents from moving out to the edges, unless they are hungry and there is food there
             if ((Position.X < Eyesight - 10 ||
                Position.X + Eyesight - 10 > window.Width ||
                Position.Y < Eyesight ||
@@ -125,8 +116,9 @@ namespace MinAgent
                 delay = 0;
             }
 
-            //If either in melee attack range of an enemy agent or hunger below 40 while it sees and enemy agent, the agent will attack/move closer.
-            if (closeEnemyAgents.Count > 0 && (closeEnemyAgents[0].Strength < Strength && Hunger < 40 || AIVector.Distance(this.Position, closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange))
+            //If either in melee attack range of an enemy agent or hunger below 40 while it sees an enemy agent, the agent will attack/move closer.
+            if (closeEnemyAgents.Count > 0 && (closeEnemyAgents[0].Strength < Strength && Hunger < 40 
+                || AIVector.Distance(this.Position, closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange))
             {
                 currentState = new StateAttack();
             }
@@ -137,8 +129,23 @@ namespace MinAgent
                 moveX = rnd.Next(-100, 101)*0.01f;
                 moveY = rnd.Next(-100, 101)*0.01f;
             }
-
+            //only if there are no enemies nearby yourself, then go help your ally
+            if (closeEnemyAgents.Count == 0 && Hunger < 60)
+            {
+                foreach (Agent allied in alliedAgents)
+                {
+                    Agent0047 agent = (Agent0047)allied;
+                    if (agent.currentState is StateAttack)
+                    {
+                        // move towards the friendly and assists with the fight
+                        return new Move(agent.Position - Position);
+                    }
+                }
+            }
+            
+            //used to determine how much time has passed since last update
             prevTime = DateTime.Now.TimeOfDay.TotalMilliseconds;
+
             return currentState.Execute(this);
         }
            
