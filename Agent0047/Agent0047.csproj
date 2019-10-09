@@ -7,8 +7,8 @@
     <ProjectGuid>{BD5B3A54-4182-41EA-8CEC-C5B98F8776ED}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MinAgent</RootNamespace>
-    <AssemblyName>MinAgent</AssemblyName>
+    <RootNamespace>Agent0047</RootNamespace>
+    <AssemblyName>Agent0047</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

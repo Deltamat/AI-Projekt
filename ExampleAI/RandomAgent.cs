@@ -48,10 +48,23 @@ namespace ExampleAI
             Agent rndAgent = null;
             rndAgent = agents[rnd.Next(agents.Count)];
 
-            if (closeEnemyAgents.Count > 0 && AIVector.Distance(Position, closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange)
+            //if (closeEnemyAgents.Count > 0 && AIVector.Distance(Position, closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange)
+            //{
+            //    return new Attack(closeEnemyAgents[0]);
+            //}
+            if (closeEnemyAgents.Count > 0)
             {
-                return new Attack(closeEnemyAgents[0]);
+                if (AIVector.Distance(Position, closeEnemyAgents[0].Position) > AIModifiers.maxMeleeAttackRange)
+                {
+                    var vectorToEnemyAgentPosition = closeEnemyAgents[0].Position - Position;
+                    return new Move(vectorToEnemyAgentPosition);
+                }
+                else //attack
+                {
+                    return new Attack(closeEnemyAgents[0]);
+                }
             }
+            
 
             switch (rnd.Next(5))
             {
