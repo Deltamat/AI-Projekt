@@ -20,6 +20,7 @@ namespace Agent0047
         double deltaTime;
         double prevTime;
         public int maxHealth;
+        double totalTimeElapsed = 0;
 
         //Only for randomization of movement
         public float moveX = 0;
@@ -51,6 +52,7 @@ namespace Agent0047
         public override IAction GetNextAction(List<IEntity> otherEntities)
         {
             deltaTime = DateTime.Now.TimeOfDay.TotalMilliseconds - prevTime;
+            totalTimeElapsed += deltaTime;
 
             List<Agent> agents = otherEntities.FindAll(a => a is Agent).ConvertAll<Agent>(a => (Agent)a);
             plants = otherEntities.FindAll(a => a is Plant);
@@ -93,9 +95,20 @@ namespace Agent0047
             //    delay = 0;
             //    underAttack = false;
             //}
+            
+            // first priorty is procreate, always do if able
+            if (ProcreationCountDown <= 0)
+            {
+                foreach (var ally in alliedAgents)
+                {
+                    if (ally.ProcreationCountDown <= 0 && AIVector.Distance(Position, ally.Position) <= AIModifiers.maxProcreateRange)
+                    {
+                        return new Procreate(ally);
+                    }
+                }
+            }
 
-
-            if (Hunger < 20 && alliedAgents.Count > 0)
+            if (Hunger < 40 && alliedAgents.Count > 0)
             {
                 agentToFollow = (Agent0047)alliedAgents[0];
                 currentState = new StateFollow();
@@ -104,7 +117,7 @@ namespace Agent0047
             {
                 currentState = new StateMoveToCenter();
             }
-            else if (ProcreationCountDown == 0)
+            else if (ProcreationCountDown <= 0)
             {
                 currentState = new StateProcreate();
             }
@@ -156,7 +169,11 @@ namespace Agent0047
                     }
                 }
             }
+
             
+            
+            
+
             //used to determine how much time has passed since last update
             prevTime = DateTime.Now.TimeOfDay.TotalMilliseconds;
 
