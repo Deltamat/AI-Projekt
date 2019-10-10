@@ -6,32 +6,86 @@ using System.Threading.Tasks;
 using AIFramework.Actions;
 using AIFramework;
 
-namespace MinAgent
+namespace Agent0047
 {
     class StateAttack : State
     {
         public override IAction Execute(Agent0047 agent)
         {
-            /*if(agent.closeEnemyAgents.Count > agent.alliedAgents.Count)
-            {   //if outnumbered flee
-                return new StateFlee().Execute(agent);
-            }
-            else */if (agent.closeEnemyAgents.Count > 0 && AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange)
+            // if no enemies just EAT 
+            if (agent.closeEnemyAgents.Count == 0)
             {
-                //attack
+                return new StateFeed().Execute(agent);
+            }
+
+            // if enemy movementspeed is faster than own speed, kamikaze attack
+            if (AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange)
+            {
                 return new Attack(agent.closeEnemyAgents[0]);
             }
-            else if(agent.closeEnemyAgents.Count > 0)
+
+            float enemyDPS = 0;
+            float ownDPS = agent.Strength * 0.5f;
+            int combinedEnemyHealth = 0;
+            int combinedAllyHealth = agent.Health;
+            float timeToKillEnemy = 0;
+            float timeToKillAllied = 0;
+            foreach (var enemy in agent.closeEnemyAgents)
             {
-                //move closer if out of range
-                AIVector vectorToEnemyAgentPosition = agent.closeEnemyAgents[0].Position - agent.Position;
-                return new Move(vectorToEnemyAgentPosition);
+                combinedEnemyHealth += enemy.Health;
+                enemyDPS += enemy.Strength * 0.5f;
+            }
+            foreach (var ally in agent.alliedAgents)
+            {
+                combinedAllyHealth += ally.Health;
+                ownDPS += ally.Strength * 0.5f;
+            }
+            timeToKillEnemy = combinedEnemyHealth / ownDPS;
+            timeToKillAllied = combinedAllyHealth / enemyDPS;
+
+            if (timeToKillAllied > timeToKillEnemy)
+            {
+                if (agent.closeEnemyAgents.Count > 0 && AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange)
+                {
+                    //attack
+                    return new Attack(agent.closeEnemyAgents[0]);
+                }
+                else if (agent.closeEnemyAgents.Count > 0)
+                {
+                    //move closer if out of range
+                    AIVector vectorToEnemyAgentPosition = agent.closeEnemyAgents[0].Position - agent.Position;
+                    return new Move(vectorToEnemyAgentPosition);
+                }
             }
             else
             {
-                //if there are no closeEnemyAgents they are either dead/gone somewhere out of vision range.
-                return new StateMoveToCenter().Execute(agent);
+                return new StateFlee().Execute(agent);
             }
+            return new StateFlee().Execute(agent);
+
+            //if outnumbered flee
+            /*if(agent.closeEnemyAgents.Count > agent.alliedAgents.Count + 1) 
+            {   
+                return new StateFlee().Execute(agent);
+            }
+            else */
+            //if (agent.closeEnemyAgents.Count > 0 && AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange)
+            //{
+            //    //attack
+            //    return new Attack(agent.closeEnemyAgents[0]);
+            //}
+            //else if (agent.closeEnemyAgents.Count > 0)
+            //{
+            //    //move closer if out of range
+            //    AIVector vectorToEnemyAgentPosition = agent.closeEnemyAgents[0].Position - agent.Position;
+            //    return new Move(vectorToEnemyAgentPosition);
+            //}
+            //else
+            //{
+            //    //if there are no closeEnemyAgents they are either dead/gone somewhere out of vision range.
+            //    return new StateMoveToCenter().Execute(agent);
+            //}
+
         }
     }
 }

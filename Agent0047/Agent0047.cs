@@ -8,9 +8,9 @@ using AIFramework.Entities;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Drawing;
-using MinAgent.States;
+using Agent0047.States;
 
-namespace MinAgent
+namespace Agent0047
 {
     public class Agent0047 : Agent
     {
@@ -31,6 +31,8 @@ namespace MinAgent
         public List<IEntity> plants;
         public List<Agent> closeEnemyAgents;
         public List<Agent> alliedAgents;
+        public List<CachedPlant> seenPlants = new List<CachedPlant>();
+        public Agent0047 agentToFollow;
 
         public Agent0047(IPropertyStorage propertyStorage) : base(propertyStorage)
         {
@@ -54,6 +56,17 @@ namespace MinAgent
             List<Agent> agents = otherEntities.FindAll(a => a is Agent).ConvertAll<Agent>(a => (Agent)a);
             plants = otherEntities.FindAll(a => a is Plant);
             plants.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
+            //foreach (var plant in plants) // add seen plants to list
+            //{
+            //    if (seenPlants.Count == 0)
+            //    {
+            //        seenPlants.Add(new CachedPlant(plant));
+            //    }
+            //    if (seenPlants.Any(a => a.CachedPos != plant.Position))
+            //    {
+            //        seenPlants.Add(new CachedPlant(plant));
+            //    }               
+            //}
             
             //Checks if any non-allied agents are nearby and puts them in a list
             closeEnemyAgents = agents.FindAll(a => !(a is Agent0047));
@@ -63,8 +76,6 @@ namespace MinAgent
             alliedAgents.Sort((x, y) => AIVector.Distance(Position, x.Position).CompareTo(AIVector.Distance(Position, y.Position)));
             
             delay++;
-
-            
 
             //foreach (Agent enemy in closeEnemyAgents)
             //{
@@ -83,9 +94,13 @@ namespace MinAgent
             //    delay = 0;
             //    underAttack = false;
             //}
-            
 
-            
+
+            if (Hunger < 20 && alliedAgents.Count > 0)
+            {
+                agentToFollow = (Agent0047)alliedAgents[0];
+                currentState = new StateFollow();
+            }
             if (ProcreationCountDown == 0 && alliedAgents.Count == 0)
             {
                 currentState = new StateMoveToCenter();

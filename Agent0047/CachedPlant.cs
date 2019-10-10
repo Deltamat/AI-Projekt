@@ -7,20 +7,20 @@ using AIFramework;
 using AIFramework.Actions;
 using AIFramework.Entities;
 
-namespace MinAgent
+namespace Agent0047
 {
-    class CachedPlant : Plant
+    public class CachedPlant : Plant
     {
         public AIVector CachedPos { get; private set; }
         public Guid CachedId { get; private set; }
 
-        public CachedPlant(Plant plant)
+        public CachedPlant(IEntity plant)
         {
             CachedId = plant.Id;
             UpdateInformation(plant);
         }
 
-        public void UpdateInformation(Plant plant)
+        public void UpdateInformation(IEntity plant)
         {
             CachedPos = plant.Position;
         }

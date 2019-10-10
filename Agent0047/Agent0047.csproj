@@ -55,6 +55,7 @@
     <Compile Include="States\StateAttack.cs" />
     <Compile Include="States\StateFeed.cs" />
     <Compile Include="States\StateFlee.cs" />
+    <Compile Include="States\StateFollow.cs" />
     <Compile Include="States\StateMoveToCenter.cs" />
     <Compile Include="States\StateProcreate.cs" />
     <Compile Include="States\StateReverseMove.cs" />

@@ -7,7 +7,7 @@ using AIFramework;
 using AIFramework.Actions;
 using AIFramework.Entities;
 
-namespace MinAgent
+namespace Agent0047
 {
     class StateFlee : State
     {
@@ -25,7 +25,7 @@ namespace MinAgent
             {
                 AIVector vector = agent.Position - agent.closeEnemyAgents[0].Position;
                 vector.Normalize();
-                AIVector rotatedVector = RotateVector(vector, rnd.Next(50, 90));
+                AIVector rotatedVector = RotateVector(vector, rnd.Next(2, 6));
                 //agent.moveX = vector.X;
                 //agent.moveY = vector.Y;
                 agent.moveX = rotatedVector.X;
