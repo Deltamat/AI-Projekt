@@ -105,6 +105,10 @@ namespace Agent0047
                     {
                         return new Procreate(ally);
                     }
+                    else if (ally.ProcreationCountDown <= 0)
+                    {
+                        return new StateProcreate().Execute(this);
+                    }
                 }
             }
 
