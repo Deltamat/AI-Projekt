@@ -7,7 +7,7 @@ using AIFramework.Entities;
 using System.Diagnostics;
 using System.Reflection;
 
-namespace MinAgent
+namespace Agent0047
 {
     public class Agent0047Factory : AgentFactory
     {

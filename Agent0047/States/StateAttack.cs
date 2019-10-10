@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AIFramework.Actions;
 using AIFramework;
 
-namespace MinAgent
+namespace Agent0047
 {
     class StateAttack : State
     {

@@ -7,7 +7,7 @@ using AIFramework;
 using AIFramework.Actions;
 using AIFramework.Entities;
 
-namespace MinAgent
+namespace Agent0047
 {
     class CachedPlant : Plant
     {

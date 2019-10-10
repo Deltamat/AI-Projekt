@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AIFramework;
 using AIFramework.Actions;
 
-namespace MinAgent
+namespace Agent0047
 {
     class StateProcreate : State
     {

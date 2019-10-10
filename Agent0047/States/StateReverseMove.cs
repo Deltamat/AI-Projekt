@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using AIFramework;
 using AIFramework.Actions;
 
-namespace MinAgent.States
+namespace Agent0047.States
 {
     class StateReverseMove : State
     {

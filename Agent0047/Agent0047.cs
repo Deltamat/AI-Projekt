@@ -8,14 +8,13 @@ using AIFramework.Entities;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Drawing;
-using MinAgent.States;
+using Agent0047.States;
 
-namespace MinAgent
+namespace Agent0047
 {
     public class Agent0047 : Agent
     {
         Random rnd;
-        bool underAttack = false; //gammel bool
         public State currentState = new StateMoveToCenter();
         public static Rectangle window = Application.OpenForms[0].Bounds;
         double deltaTime;
@@ -37,9 +36,9 @@ namespace MinAgent
             rnd = new Random();
             MovementSpeed = 50;
             Strength = 80;
-            Health = 40;
-            Eyesight = 50;
-            Endurance = 30;
+            Health = 60;
+            Eyesight = 60;
+            Endurance = 0;
             Dodge = 0;
 
             maxHealth = Health;
@@ -116,8 +115,8 @@ namespace MinAgent
                 delay = 0;
             }
 
-            //If either in melee attack range of an enemy agent or hunger below 40 while it sees an enemy agent, the agent will attack/move closer.
-            if (closeEnemyAgents.Count > 0 && (closeEnemyAgents[0].Strength < Strength && Hunger < 40 
+            //If either in melee attack range of an enemy agent or hunger below 100 while it sees an enemy agent, the agent will attack/move closer.
+            if (closeEnemyAgents.Count > 0 && (closeEnemyAgents[0].Strength < Strength && Hunger < 100 
                 || AIVector.Distance(this.Position, closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange))
             {
                 currentState = new StateAttack();
@@ -130,7 +129,7 @@ namespace MinAgent
                 moveY = rnd.Next(-100, 101)*0.01f;
             }
             //only if there are no enemies nearby yourself, then go help your ally
-            if (closeEnemyAgents.Count == 0 && Hunger < 60)
+            if (closeEnemyAgents.Count == 0 && Hunger < 100)
             {
                 foreach (Agent allied in alliedAgents)
                 {
