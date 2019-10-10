@@ -131,7 +131,7 @@ namespace Agent0047
             }
 
             //If either in melee attack range of an enemy agent or hunger below 100 while it sees an enemy agent, the agent will attack/move closer.
-            if (closeEnemyAgents.Count > 0 && (closeEnemyAgents[0].Strength < Strength && Hunger < 100 
+            if (closeEnemyAgents.Count > 0 && !closeEnemyAgents[0].Defending && (closeEnemyAgents[0].Strength < Strength && Hunger < 100 
                 || AIVector.Distance(this.Position, closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange))
             {
                 currentState = new StateAttack();

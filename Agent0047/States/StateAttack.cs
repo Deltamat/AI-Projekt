@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AIFramework.Actions;
 using AIFramework;
+using AIFramework.Entities;
 
 namespace Agent0047
 {
@@ -18,8 +19,8 @@ namespace Agent0047
                 return new StateFeed().Execute(agent);
             }
 
-            // if enemy movementspeed is faster than own speed, kamikaze attack
-            if (AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange)
+            // if in range of enemy: attack
+            if (AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange && !agent.closeEnemyAgents[0].Defending)
             {
                 return new Attack(agent.closeEnemyAgents[0]);
             }
@@ -28,8 +29,6 @@ namespace Agent0047
             float ownDPS = agent.Strength * 0.5f;
             int combinedEnemyHealth = 0;
             int combinedAllyHealth = agent.Health;
-            float timeToKillEnemy = 0;
-            float timeToKillAllied = 0;
             foreach (var enemy in agent.closeEnemyAgents)
             {
                 combinedEnemyHealth += enemy.Health;
@@ -40,12 +39,21 @@ namespace Agent0047
                 combinedAllyHealth += ally.Health;
                 ownDPS += ally.Strength * 0.5f;
             }
-            timeToKillEnemy = combinedEnemyHealth / ownDPS;
-            timeToKillAllied = combinedAllyHealth / enemyDPS;
+            float timeToKillEnemy = combinedEnemyHealth / ownDPS;
+            float timeToKillAllied = combinedAllyHealth / enemyDPS;
 
             if (timeToKillAllied > timeToKillEnemy)
             {
-                if (agent.closeEnemyAgents.Count > 0 && AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) <= AIModifiers.maxMeleeAttackRange)
+                Agent targetEnemy = agent.closeEnemyAgents[0];
+                foreach (var enemy in agent.closeEnemyAgents)
+                {
+                    if (targetEnemy.Health > enemy.Health && !enemy.Defending)
+                    {
+                        targetEnemy = enemy;
+                    }
+                }
+
+                if (agent.closeEnemyAgents.Count > 0 && AIVector.Distance(agent.Position, targetEnemy.Position) <= AIModifiers.maxMeleeAttackRange)
                 {
                     //attack
                     return new Attack(agent.closeEnemyAgents[0]);
@@ -53,7 +61,7 @@ namespace Agent0047
                 else if (agent.closeEnemyAgents.Count > 0)
                 {
                     //move closer if out of range
-                    AIVector vectorToEnemyAgentPosition = agent.closeEnemyAgents[0].Position - agent.Position;
+                    AIVector vectorToEnemyAgentPosition = targetEnemy.Position - agent.Position;
                     return new Move(vectorToEnemyAgentPosition);
                 }
             }

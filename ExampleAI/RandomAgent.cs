@@ -21,12 +21,12 @@ namespace ExampleAI
             : base(propertyStorage)
         {
             rnd = new Random();
-            MovementSpeed = 35;
-            Strength= 35;
+            MovementSpeed = 30;
+            Strength= 70;
             Health= 70;
-            Eyesight= 80;
-            Endurance= 25;
-            Dodge= 5;
+            Eyesight= 60;
+            Endurance= 20;
+            Dodge= 0;
 
 
             moveX = rnd.Next(-1, 2);
