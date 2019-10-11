@@ -65,11 +65,15 @@ namespace Agent0047
                     return new Move(vectorToEnemyAgentPosition);
                 }
             }
-            else
+            else if (AIVector.Distance(agent.Position, agent.closeEnemyAgents[0].Position) < agent.Eyesight * 0.5f)
             {
+                AIVector moveVector = agent.closeEnemyAgents[0].Position - agent.Position;
+                agent.moveX = moveVector.X;
+                agent.moveY = moveVector.Y;
                 return new StateFlee().Execute(agent);
             }
-            return new StateFlee().Execute(agent);
+            return new StateFeed().Execute(agent);
+            //return new StateFlee().Execute(agent);
 
             //if outnumbered flee
             /*if(agent.closeEnemyAgents.Count > agent.alliedAgents.Count + 1) 
