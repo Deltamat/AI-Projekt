@@ -54,7 +54,6 @@ namespace Agent0047
             {
                 AIVector vector = agent.Position - agent.closeEnemyAgents[0].Position;
                 return new Move(vector);
-                halfwayDistance = null;
             }
             if (halfwayDistance != null)
             {
