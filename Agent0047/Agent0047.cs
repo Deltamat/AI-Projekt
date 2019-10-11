@@ -108,11 +108,11 @@ namespace Agent0047
                 }
             }
 
-            if (Hunger < 40 && alliedAgents.Count > 0)
-            {
-                agentToFollow = (Agent0047)alliedAgents[0];
-                currentState = new StateFollow();
-            }
+            //if (Hunger < 40 && alliedAgents.Count > 0)
+            //{
+            //    agentToFollow = (Agent0047)alliedAgents[0];
+            //    currentState = new StateFollow();
+            //}
             if (ProcreationCountDown == 0 && alliedAgents.Count == 0)
             {
                 currentState = new StateMoveToCenter();

@@ -50,6 +50,12 @@ namespace Agent0047
                 }
             }
 
+            if (longestSpace < 20)
+            {
+                AIVector vector = agent.Position - agent.closeEnemyAgents[0].Position;
+                return new Move(vector);
+                halfwayDistance = null;
+            }
             if (halfwayDistance != null)
             {
                 //Returns a direction vector from the agents position and the halfway point found above

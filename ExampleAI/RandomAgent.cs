@@ -22,10 +22,10 @@ namespace ExampleAI
         {
             rnd = new Random();
             MovementSpeed = 30;
-            Strength= 70;
-            Health= 70;
-            Eyesight= 60;
-            Endurance= 20;
+            Strength= 50;
+            Health= 60;
+            Eyesight= 70;
+            Endurance= 40;
             Dodge= 0;
 
 
